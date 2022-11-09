@@ -23,78 +23,63 @@ class TasksList extends StatelessWidget {
     }
 
     return BlocBuilder<TodoBloc, TodoState>(builder: (context, state) {
-      if (state.isLoading) {
+      // if (state.isLoading) {
+      //   return const Center(
+      //     child: CircularProgressIndicator(),
+      //   );
+      // } else {
+      if (state.todoList.isEmpty) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: Text('No data Found'),
         );
       } else {
-        if (state.todoList.isEmpty) {
-          return const Center(
-            child: Text('No data Found'),
-          );
-        } else {
-          return ListView.builder(
-              itemCount: state.todoList.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  color: Colors.grey,
-                  child: ListView(
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Text\n ${state.todoList[index].names}",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                iconSize: 24.0,
-                                color: const Color.fromARGB(255, 158, 244, 54),
-                                onPressed: () async {
-                                  _updateTask(context);
-                                },
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            iconSize: 24.0,
-                            color: Colors.red,
-                            onPressed: () {
-                              context.read<TodoBloc>().add(
-                                    DeleteTodos(
-                                      state.todoList[index],
-                                    ),
-                                  );
-                            },
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "Description\n ${state.todoList[index].description}",
-                        style: const TextStyle(
-                          fontSize: 14,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 4,
-                      ),
-                    ],
+        return ListView.builder(
+            itemCount: state.todoList.length,
+            itemBuilder: (context, index) {
+              return Card(
+                margin: const EdgeInsets.all(10),
+                child: ListTile(
+                  title: Text(
+                    // ignore: unnecessary_string_interpolations
+                    '${state.todoList[index].names}',
+                    style: const TextStyle(overflow: TextOverflow.ellipsis),
                   ),
-                );
-              });
-        }
+                  subtitle: Text(
+                    // ignore: unnecessary_string_interpolations
+                    '${state.todoList[index].description}',
+                    style: const TextStyle(overflow: TextOverflow.ellipsis),
+                  ),
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        iconSize: 24.0,
+                        color: const Color.fromARGB(255, 158, 244, 54),
+                        onPressed: () async {
+                          _updateTask(context);
+                        },
+                      ),
+                      IconButton(
+                          icon: const Icon(Icons.delete),
+                          iconSize: 24.0,
+                          color: Colors.red,
+                          onPressed: () {
+                            // if (state.isDeleted) {
+                            context.read<TodoBloc>().add(
+                                  DeleteTodos(
+                                    state.todoList[index],
+                                  ),
+                                );
+                            //}
+                          }),
+                    ]),
+                  ),
+                ),
+              );
+            });
       }
+      // }
     });
   }
 }

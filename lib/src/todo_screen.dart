@@ -39,7 +39,7 @@ class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 252, 251, 251),
       appBar: AppBar(
         title: const Text('Todo App'),
         backgroundColor: Colors.brown,
